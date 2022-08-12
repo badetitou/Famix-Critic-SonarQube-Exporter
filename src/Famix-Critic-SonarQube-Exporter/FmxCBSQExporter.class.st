@@ -49,9 +49,9 @@ FmxCBSQExporter >> buildTextRangeFor: aFamixCBViolation [
 	end := text fmxCBSQToLineCharacter:
 		       aFamixCBViolation violatingEntity sourceAnchor endPos.
 	^ FmxCBSQTextRange new
-		  startLine: (start at: #line);
+		  startLine: (start at: #line) + 1;
 		  startColumn: (start at: #character);
-		  endLine: (end at: #line);
+		  endLine: (end at: #line) + 1;
 		  endColumn: (end at: #character);
 		  yourself
 ]
