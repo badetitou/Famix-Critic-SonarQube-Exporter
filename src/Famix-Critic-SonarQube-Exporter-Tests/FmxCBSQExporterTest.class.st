@@ -18,6 +18,16 @@ FmxCBSQExporterTest >> setUp [
 ]
 
 { #category : #test }
+FmxCBSQExporterTest >> testConvertViolation [
+
+	| issue famixViolation |
+	famixViolation := FamixCBViolation new.
+	issue := exporter convertViolation: FamixCBViolation new.
+	self assert: issue class equals: FmxCBSQIssue.
+	self assert: issue engineId equals: 'Moose'.
+]
+
+{ #category : #test }
 FmxCBSQExporterTest >> testConvertViolations [
 
 	| issues |

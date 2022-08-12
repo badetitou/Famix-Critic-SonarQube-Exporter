@@ -21,21 +21,49 @@ Class {
 	#instVars : [
 		'violations',
 		'targetFileReference',
-		'sonarIssues'
+		'engineId'
 	],
 	#category : #'Famix-Critic-SonarQube-Exporter-Exporter'
 }
 
 { #category : #api }
+FmxCBSQExporter >> convertViolation: aFamixCBViolation [
+	| sonarIssue |
+	sonarIssue := FmxCBSQIssue new.
+	sonarIssue engineId: self engineId.
+	^ sonarIssue
+]
+
+{ #category : #api }
 FmxCBSQExporter >> convertViolations: aCollectionOfViolations [
-	sonarIssues := FmxCBSQIssueCollection new.
-	^ sonarIssues
+	| issues |
+	issues := FmxCBSQIssueCollection new.
+	^ issues
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> engineId [
+
+	^ engineId
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> engineId: anObject [
+
+	engineId := anObject
 ]
 
 { #category : #api }
 FmxCBSQExporter >> export [
 
+	| sonarIssues |
 	sonarIssues := self convertViolations: self violations
+]
+
+{ #category : #api }
+FmxCBSQExporter >> initialize [
+	super initialize.
+	self engineId: 'Moose'
 ]
 
 { #category : #accessing }
