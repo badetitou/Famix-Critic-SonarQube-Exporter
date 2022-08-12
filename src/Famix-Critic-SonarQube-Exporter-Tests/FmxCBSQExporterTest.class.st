@@ -20,15 +20,20 @@ FmxCBSQExporterTest >> setUp [
 { #category : #test }
 FmxCBSQExporterTest >> testConvertViolation [
 
-	| issue famixViolation famixCondition |
+	| issue famixViolation famixCondition famixEntity famixEntitySourceAnchor |
 	famixViolation := FamixCBViolation new.
 	famixCondition := FamixCBCondition new.
+	famixEntity := FamixJavaClass new.
+	famixEntitySourceAnchor := FamixJavaIndexedFileAnchor new.
+	famixEntity sourceAnchor: famixEntitySourceAnchor.
+	famixViolation violatingEntity: famixEntity.
+	famixEntitySourceAnchor fileName: 'A.java'.
 	famixCondition name: 'anIssue'.
 	famixViolation violatedCondition: famixCondition.
 	issue := exporter convertViolation: famixViolation.
 	self assert: issue class equals: FmxCBSQIssue.
 	self assert: issue engineId equals: 'Moose'.
-	self assert: issue ruleId equals: 'anIssue'.
+	self assert: issue ruleId equals: 'anIssue'
 ]
 
 { #category : #test }

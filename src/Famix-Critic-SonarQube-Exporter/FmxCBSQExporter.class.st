@@ -30,6 +30,24 @@ Class {
 }
 
 { #category : #api }
+FmxCBSQExporter >> buildPrimaryLocationFor: aFamixCBViolation [
+	| location |
+	location := FmxCBSQLocation new.
+	location message: aFamixCBViolation violatedCondition summary.
+	location filePath: (aFamixCBViolation violatingEntity sourceAnchor fileName).
+	location textRange: (self buildTextRangeFor: aFamixCBViolation).
+	^ location
+]
+
+{ #category : #api }
+FmxCBSQExporter >> buildTextRangeFor: aFamixCBViolation [
+
+	^ FmxCBSQTextRange new
+		  startLine: 1;
+		  yourself
+]
+
+{ #category : #api }
 FmxCBSQExporter >> convertViolation: aFamixCBViolation [
 
 	| sonarIssue |
@@ -39,14 +57,18 @@ FmxCBSQExporter >> convertViolation: aFamixCBViolation [
 	sonarIssue effortMinutes: self defaultEffortMinutes.
 	sonarIssue type: self defaultType.
 	sonarIssue ruleId: aFamixCBViolation violatedCondition name.
+	sonarIssue primaryLocation: (self buildPrimaryLocationFor: aFamixCBViolation).
 	^ sonarIssue
 ]
 
 { #category : #api }
 FmxCBSQExporter >> convertViolations: aCollectionOfViolations [
-	| issues |
-	issues := FmxCBSQIssueCollection new.
-	^ issues
+
+	| issueCollection |
+	issueCollection := FmxCBSQIssueCollection new.
+	aCollectionOfViolations do: [ :violation | 
+		issueCollection issues add: (self convertViolation: violation) ].
+	^ issueCollection
 ]
 
 { #category : #accessing }
