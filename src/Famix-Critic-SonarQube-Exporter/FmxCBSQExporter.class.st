@@ -29,7 +29,7 @@ Class {
 	#category : #'Famix-Critic-SonarQube-Exporter-Exporter'
 }
 
-{ #category : #api }
+{ #category : #'api - convert' }
 FmxCBSQExporter >> buildPrimaryLocationFor: aFamixCBViolation [
 	| location |
 	location := FmxCBSQLocation new.
@@ -39,7 +39,7 @@ FmxCBSQExporter >> buildPrimaryLocationFor: aFamixCBViolation [
 	^ location
 ]
 
-{ #category : #api }
+{ #category : #'api - convert' }
 FmxCBSQExporter >> buildTextRangeFor: aFamixCBViolation [
 
 	^ FmxCBSQTextRange new
@@ -47,7 +47,7 @@ FmxCBSQExporter >> buildTextRangeFor: aFamixCBViolation [
 		  yourself
 ]
 
-{ #category : #api }
+{ #category : #'api - convert' }
 FmxCBSQExporter >> convertViolation: aFamixCBViolation [
 
 	| sonarIssue |
@@ -61,7 +61,7 @@ FmxCBSQExporter >> convertViolation: aFamixCBViolation [
 	^ sonarIssue
 ]
 
-{ #category : #api }
+{ #category : #'api - convert' }
 FmxCBSQExporter >> convertViolations: aCollectionOfViolations [
 
 	| issueCollection |
@@ -123,7 +123,27 @@ FmxCBSQExporter >> engineId: anObject [
 FmxCBSQExporter >> export [
 
 	| sonarIssues |
-	sonarIssues := self convertViolations: self violations
+	sonarIssues := self convertViolations: self violations.
+	self exportSonarIssues: sonarIssues 
+]
+
+{ #category : #'api - export' }
+FmxCBSQExporter >> exportSonarIssues: sonarIssues [
+
+	self targetFileReference writeStreamDo: [ :writeStream | 
+		self exportSonarIssues: sonarIssues on: writeStream ]
+]
+
+{ #category : #'api - export' }
+FmxCBSQExporter >> exportSonarIssues: sonarIssues on: stream [
+
+	(NeoJSONWriter on: stream)
+		prettyPrint: true;
+		mapInstVarsFor: FmxCBSQIssueCollection;
+		mapInstVarsFor: FmxCBSQIssue;
+		mapInstVarsFor: FmxCBSQLocation;
+		mapInstVarsFor: FmxCBSQTextRange;
+		nextPut: sonarIssues
 ]
 
 { #category : #api }
