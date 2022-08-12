@@ -42,8 +42,17 @@ FmxCBSQExporter >> buildPrimaryLocationFor: aFamixCBViolation [
 { #category : #'api - convert' }
 FmxCBSQExporter >> buildTextRangeFor: aFamixCBViolation [
 
+	| text start end |
+	text := aFamixCBViolation violatingEntity sourceAnchor completeText.
+	start := text fmxCBSQToLineCharacter:
+		         aFamixCBViolation violatingEntity sourceAnchor startPos.
+	end := text fmxCBSQToLineCharacter:
+		       aFamixCBViolation violatingEntity sourceAnchor endPos.
 	^ FmxCBSQTextRange new
-		  startLine: 1;
+		  startLine: (start at: #line);
+		  startColumn: (start at: #character);
+		  endLine: (end at: #line);
+		  endColumn: (end at: #character);
 		  yourself
 ]
 
