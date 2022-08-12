@@ -20,11 +20,15 @@ FmxCBSQExporterTest >> setUp [
 { #category : #test }
 FmxCBSQExporterTest >> testConvertViolation [
 
-	| issue famixViolation |
+	| issue famixViolation famixCondition |
 	famixViolation := FamixCBViolation new.
-	issue := exporter convertViolation: FamixCBViolation new.
+	famixCondition := FamixCBCondition new.
+	famixCondition name: 'anIssue'.
+	famixViolation violatedCondition: famixCondition.
+	issue := exporter convertViolation: famixViolation.
 	self assert: issue class equals: FmxCBSQIssue.
 	self assert: issue engineId equals: 'Moose'.
+	self assert: issue ruleId equals: 'anIssue'.
 ]
 
 { #category : #test }

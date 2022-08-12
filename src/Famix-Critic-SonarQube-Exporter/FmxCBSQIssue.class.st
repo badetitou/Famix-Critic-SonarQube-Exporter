@@ -13,6 +13,54 @@ Class {
 	#category : #'Famix-Critic-SonarQube-Exporter-GenericIssueModel'
 }
 
+{ #category : #'as yet unclassified' }
+FmxCBSQIssue class >> issueSeverityBlocker [
+
+	^ 'BLOCKER'
+]
+
+{ #category : #'as yet unclassified' }
+FmxCBSQIssue class >> issueSeverityCritical [
+
+	^ 'CRITICAL'
+]
+
+{ #category : #'as yet unclassified' }
+FmxCBSQIssue class >> issueSeverityInfo [
+
+	^ 'INFO'
+]
+
+{ #category : #'as yet unclassified' }
+FmxCBSQIssue class >> issueSeverityMajor [
+
+	^ 'MAJOR'
+]
+
+{ #category : #'as yet unclassified' }
+FmxCBSQIssue class >> issueSeverityMinor [
+
+	^ 'MINOR'
+]
+
+{ #category : #'as yet unclassified' }
+FmxCBSQIssue class >> issueTypeBug [
+
+	^ 'BUG'
+]
+
+{ #category : #'as yet unclassified' }
+FmxCBSQIssue class >> issueTypeCodeSmell [
+
+	^ 'CODE_SMELL'
+]
+
+{ #category : #'as yet unclassified' }
+FmxCBSQIssue class >> issueTypeVulnerability [
+
+	^ 'VULNERABILITY'
+]
+
 { #category : #accessing }
 FmxCBSQIssue >> effortMinutes [
 

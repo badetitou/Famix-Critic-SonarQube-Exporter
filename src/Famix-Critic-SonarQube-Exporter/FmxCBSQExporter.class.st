@@ -21,16 +21,24 @@ Class {
 	#instVars : [
 		'violations',
 		'targetFileReference',
-		'engineId'
+		'engineId',
+		'defaultType',
+		'defaultSeverity',
+		'defaultEffortMinutes'
 	],
 	#category : #'Famix-Critic-SonarQube-Exporter-Exporter'
 }
 
 { #category : #api }
 FmxCBSQExporter >> convertViolation: aFamixCBViolation [
+
 	| sonarIssue |
 	sonarIssue := FmxCBSQIssue new.
 	sonarIssue engineId: self engineId.
+	sonarIssue severity: self defaultSeverity.
+	sonarIssue effortMinutes: self defaultEffortMinutes.
+	sonarIssue type: self defaultType.
+	sonarIssue ruleId: aFamixCBViolation violatedCondition name.
 	^ sonarIssue
 ]
 
@@ -39,6 +47,42 @@ FmxCBSQExporter >> convertViolations: aCollectionOfViolations [
 	| issues |
 	issues := FmxCBSQIssueCollection new.
 	^ issues
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> defaultEffortMinutes [
+
+	^ defaultEffortMinutes
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> defaultEffortMinutes: anObject [
+
+	defaultEffortMinutes := anObject
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> defaultSeverity [
+
+	^ defaultSeverity
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> defaultSeverity: anObject [
+
+	defaultSeverity := anObject
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> defaultType [
+
+	^ defaultType
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> defaultType: anObject [
+
+	defaultType := anObject
 ]
 
 { #category : #accessing }
@@ -63,7 +107,10 @@ FmxCBSQExporter >> export [
 { #category : #api }
 FmxCBSQExporter >> initialize [
 	super initialize.
-	self engineId: 'Moose'
+	self engineId: 'Moose'.
+	self defaultSeverity: FmxCBSQIssue issueSeverityMajor.
+	self defaultType: FmxCBSQIssue issueTypeCodeSmell.
+	self defaultEffortMinutes: 0
 ]
 
 { #category : #accessing }
