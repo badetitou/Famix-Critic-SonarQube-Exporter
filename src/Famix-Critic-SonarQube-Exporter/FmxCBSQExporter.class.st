@@ -26,7 +26,8 @@ Class {
 		'defaultSeverity',
 		'defaultEffortMinutes',
 		'withoutFileNamePrefix',
-		'withFileNamePrefix'
+		'withFileNamePrefix',
+		'modules'
 	],
 	#category : #'Famix-Critic-SonarQube-Exporter-Exporter'
 }
@@ -70,8 +71,11 @@ FmxCBSQExporter >> convertViolation: aFamixCBViolation [
 	sonarIssue severity: self defaultSeverity.
 	sonarIssue effortMinutes: self defaultEffortMinutes.
 	sonarIssue type: self defaultType.
-	sonarIssue ruleId: aFamixCBViolation violatedCondition name.
-	sonarIssue primaryLocation: (self buildPrimaryLocationFor: aFamixCBViolation).
+	sonarIssue ruleId: (aFamixCBViolation violatedCondition name
+			 copyReplaceAll: ''''
+			 with: '').
+	sonarIssue primaryLocation:
+		(self buildPrimaryLocationFor: aFamixCBViolation).
 	^ sonarIssue
 ]
 
@@ -171,7 +175,22 @@ FmxCBSQExporter >> initialize [
 	self defaultType: FmxCBSQIssue issueTypeCodeSmell.
 	self defaultEffortMinutes: 0.
 	self withoutFileNamePrefix: ''.
-	self withFileNamePrefix: ''
+	self withFileNamePrefix: ''.
+	self modules: OrderedCollection new
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> modules [
+
+	"Return the collection of submodules. It is usefull when having modules maven projects"
+
+	^ modules
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> modules: anObject [
+
+	modules := anObject
 ]
 
 { #category : #accessing }
