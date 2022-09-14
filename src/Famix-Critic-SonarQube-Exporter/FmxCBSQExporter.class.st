@@ -72,7 +72,7 @@ FmxCBSQExporter >> convertViolation: aFamixCBViolation [
 	sonarIssue effortMinutes: self defaultEffortMinutes.
 	sonarIssue type: self defaultType.
 	sonarIssue ruleId: (aFamixCBViolation violatedCondition name
-			 copyReplaceAll: ''''
+			 copyReplaceAll: ','
 			 with: '').
 	sonarIssue primaryLocation:
 		(self buildPrimaryLocationFor: aFamixCBViolation).
