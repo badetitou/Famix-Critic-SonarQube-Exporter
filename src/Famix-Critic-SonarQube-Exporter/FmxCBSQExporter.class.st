@@ -25,7 +25,6 @@ Class {
 		'defaultType',
 		'defaultSeverity',
 		'defaultEffortMinutes',
-		'withoutFileNamePrefix',
 		'withFileNamePrefix',
 		'modules'
 	],
@@ -35,12 +34,13 @@ Class {
 { #category : #'api - convert' }
 FmxCBSQExporter >> buildPrimaryLocationFor: aFamixCBViolation [
 
-	| location |
+	| location fileName |
 	location := FmxCBSQLocation new.
 	location message: aFamixCBViolation violatedCondition summary.
-	location filePath: self withFileNamePrefix
-		, (aFamixCBViolation violatingEntity sourceAnchor fileName 
-				 withoutPrefix: self withoutFileNamePrefix).
+	fileName := aFamixCBViolation violatingEntity sourceAnchor fileName.
+	self modules do: [ :module | 
+		fileName := fileName withoutPrefix: module ].
+	location filePath: self withFileNamePrefix , fileName.
 	location textRange: (self buildTextRangeFor: aFamixCBViolation).
 	^ location
 ]
@@ -174,7 +174,6 @@ FmxCBSQExporter >> initialize [
 	self defaultSeverity: FmxCBSQIssue issueSeverityMajor.
 	self defaultType: FmxCBSQIssue issueTypeCodeSmell.
 	self defaultEffortMinutes: 0.
-	self withoutFileNamePrefix: ''.
 	self withFileNamePrefix: ''.
 	self modules: OrderedCollection new
 ]
@@ -227,16 +226,4 @@ FmxCBSQExporter >> withFileNamePrefix [
 FmxCBSQExporter >> withFileNamePrefix: anObject [
 
 	withFileNamePrefix := anObject
-]
-
-{ #category : #accessing }
-FmxCBSQExporter >> withoutFileNamePrefix [
-
-	^ withoutFileNamePrefix
-]
-
-{ #category : #accessing }
-FmxCBSQExporter >> withoutFileNamePrefix: anObject [
-
-	withoutFileNamePrefix := anObject
 ]
