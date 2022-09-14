@@ -25,7 +25,8 @@ Class {
 		'defaultType',
 		'defaultSeverity',
 		'defaultEffortMinutes',
-		'withoutFileNamePrefix'
+		'withoutFileNamePrefix',
+		'withFileNamePrefix'
 	],
 	#category : #'Famix-Critic-SonarQube-Exporter-Exporter'
 }
@@ -36,9 +37,9 @@ FmxCBSQExporter >> buildPrimaryLocationFor: aFamixCBViolation [
 	| location |
 	location := FmxCBSQLocation new.
 	location message: aFamixCBViolation violatedCondition summary.
-	location filePath:
-		(aFamixCBViolation violatingEntity sourceAnchor fileName 
-			 withoutPrefix: self withoutFileNamePrefix).
+	location filePath: self withFileNamePrefix
+		, (aFamixCBViolation violatingEntity sourceAnchor fileName 
+				 withoutPrefix: self withoutFileNamePrefix).
 	location textRange: (self buildTextRangeFor: aFamixCBViolation).
 	^ location
 ]
@@ -169,7 +170,8 @@ FmxCBSQExporter >> initialize [
 	self defaultSeverity: FmxCBSQIssue issueSeverityMajor.
 	self defaultType: FmxCBSQIssue issueTypeCodeSmell.
 	self defaultEffortMinutes: 0.
-	self withoutFileNamePrefix: ''
+	self withoutFileNamePrefix: ''.
+	self withFileNamePrefix: ''
 ]
 
 { #category : #accessing }
@@ -194,6 +196,18 @@ FmxCBSQExporter >> violations [
 FmxCBSQExporter >> violations: anObject [
 
 	violations := anObject
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> withFileNamePrefix [
+
+	^ withFileNamePrefix
+]
+
+{ #category : #accessing }
+FmxCBSQExporter >> withFileNamePrefix: anObject [
+
+	withFileNamePrefix := anObject
 ]
 
 { #category : #accessing }
