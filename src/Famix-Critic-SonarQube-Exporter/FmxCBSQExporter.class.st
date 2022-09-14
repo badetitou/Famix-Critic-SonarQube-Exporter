@@ -75,8 +75,11 @@ FmxCBSQExporter >> convertViolations: aCollectionOfViolations [
 
 	| issueCollection |
 	issueCollection := FmxCBSQIssueCollection new.
-	aCollectionOfViolations do: [ :violation | 
-		issueCollection issues add: (self convertViolation: violation) ].
+	aCollectionOfViolations
+		select: [ :violation | 
+		violation violatingEntity sourceAnchor isNotNil ]
+		thenDo: [ :violation | 
+			issueCollection issues add: (self convertViolation: violation) ].
 	^ issueCollection
 ]
 
