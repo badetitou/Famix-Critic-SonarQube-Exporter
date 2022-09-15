@@ -170,10 +170,10 @@ FmxCBSQExporter >> exportSonarIssues: sonarIssues on: stream [
 { #category : #api }
 FmxCBSQExporter >> initialize [
 	super initialize.
-	self engineId: 'Moose'.
+	self engineId: '(Moose)'.
 	self defaultSeverity: FmxCBSQIssue issueSeverityMajor.
 	self defaultType: FmxCBSQIssue issueTypeCodeSmell.
-	self defaultEffortMinutes: 0.
+	self defaultEffortMinutes: 5.
 	self withFileNamePrefix: ''.
 	self modules: OrderedCollection new
 ]
