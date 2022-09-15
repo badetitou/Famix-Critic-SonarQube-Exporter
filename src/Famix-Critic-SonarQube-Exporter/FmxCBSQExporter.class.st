@@ -36,7 +36,7 @@ FmxCBSQExporter >> buildPrimaryLocationFor: aFamixCBViolation [
 
 	| location fileName |
 	location := FmxCBSQLocation new.
-	location message: aFamixCBViolation violatedCondition name.
+	location message: aFamixCBViolation violatedCondition name trim.
 	fileName := aFamixCBViolation violatingEntity sourceAnchor fileName.
 	self modules do: [ :module | 
 		fileName := fileName withoutPrefix: module ].
@@ -71,7 +71,7 @@ FmxCBSQExporter >> convertViolation: aFamixCBViolation [
 	sonarIssue severity: self defaultSeverity.
 	sonarIssue effortMinutes: self defaultEffortMinutes.
 	sonarIssue type: self defaultType.
-	sonarIssue ruleId: (aFamixCBViolation violatedCondition name
+	sonarIssue ruleId: (aFamixCBViolation violatedCondition name trim
 			 copyReplaceAll: ','
 			 with: '').
 	sonarIssue primaryLocation:
