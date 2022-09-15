@@ -36,7 +36,7 @@ FmxCBSQExporter >> buildPrimaryLocationFor: aFamixCBViolation [
 
 	| location fileName |
 	location := FmxCBSQLocation new.
-	location message: aFamixCBViolation violatedCondition summary.
+	location message: aFamixCBViolation violatedCondition name.
 	fileName := aFamixCBViolation violatingEntity sourceAnchor fileName.
 	self modules do: [ :module | 
 		fileName := fileName withoutPrefix: module ].
