@@ -39,7 +39,7 @@ FmxCBSQExporterTest >> testConvertViolation [
 
 	issue := exporter convertViolation: famixViolation.
 	self assert: issue class equals: FmxCBSQIssue.
-	self assert: issue engineId equals: 'Moose'.
+	self assert: issue engineId equals: '(Moose)'.
 	self assert: issue ruleId equals: 'anIssue'
 ]
 
