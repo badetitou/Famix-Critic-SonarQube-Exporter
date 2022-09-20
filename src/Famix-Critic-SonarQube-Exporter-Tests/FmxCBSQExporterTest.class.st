@@ -51,3 +51,55 @@ FmxCBSQExporterTest >> testConvertViolations [
 	self assert: issues class equals: FmxCBSQIssueCollection.
 	self assert: issues issues isEmpty
 ]
+
+{ #category : #test }
+FmxCBSQExporterTest >> testRuleIdMustHaveNoComma [
+
+	| issue famixViolation famixCondition famixEntity famixEntitySourceAnchor famixModel |
+	famixModel := FamixJavaModel new.
+	famixViolation := FamixCBViolation new.
+	famixCondition := FamixCBCondition new.
+	famixEntity := FamixJavaClass new.
+	famixEntitySourceAnchor := FamixJavaIndexedFileAnchor new.
+	famixEntity sourceAnchor: famixEntitySourceAnchor.
+	famixEntitySourceAnchor startPos: 0.
+	famixEntitySourceAnchor endPos: 0.
+	famixViolation violatingEntity: famixEntity.
+	famixEntitySourceAnchor fileName: 'A.java'.
+	famixCondition name: 'an, Issue'.
+	famixViolation violatedCondition: famixCondition.
+	famixModel addAll: { 
+			famixEntity.
+			famixEntitySourceAnchor }.
+
+	issue := exporter convertViolation: famixViolation.
+	self assert: issue class equals: FmxCBSQIssue.
+	self assert: issue engineId equals: '(Moose)'.
+	self assert: issue ruleId equals: 'an Issue'
+]
+
+{ #category : #test }
+FmxCBSQExporterTest >> testRuleIdShouldNotHaveTrailingSpaces [
+
+	| issue famixViolation famixCondition famixEntity famixEntitySourceAnchor famixModel |
+	famixModel := FamixJavaModel new.
+	famixViolation := FamixCBViolation new.
+	famixCondition := FamixCBCondition new.
+	famixEntity := FamixJavaClass new.
+	famixEntitySourceAnchor := FamixJavaIndexedFileAnchor new.
+	famixEntity sourceAnchor: famixEntitySourceAnchor.
+	famixEntitySourceAnchor startPos: 0.
+	famixEntitySourceAnchor endPos: 0.
+	famixViolation violatingEntity: famixEntity.
+	famixEntitySourceAnchor fileName: 'A.java'.
+	famixCondition name: '   anIssue   '.
+	famixViolation violatedCondition: famixCondition.
+	famixModel addAll: { 
+			famixEntity.
+			famixEntitySourceAnchor }.
+
+	issue := exporter convertViolation: famixViolation.
+	self assert: issue class equals: FmxCBSQIssue.
+	self assert: issue engineId equals: '(Moose)'.
+	self assert: issue ruleId equals: 'anIssue'
+]
